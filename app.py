@@ -22,9 +22,7 @@ ref = load_ref()
 
 # ---------- 2. 构造比例映射 ----------
 def build_map(df):
-    cnt = (df.assign(切口类别=lambda d:d['切口类别'].astype(int))
-             .dropna(subset=['切口类别'])
-             .groupby(['手术编码', '诊断名称', '切口类别'])
+    cnt = (df.groupby(['手术编码', '诊断名称', '切口类别'])
              .size().reset_index(name='n'))
     cnt['pct'] = (cnt.groupby(['手术编码', '诊断名称'])['n']
                     .transform(lambda x: (x / x.sum() * 100).round(0).astype(int)))
